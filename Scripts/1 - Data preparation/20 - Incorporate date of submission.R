@@ -16,6 +16,7 @@ library(lubridate)
 setwd("./Copycat-Towns/Scripts/1 - Data preparation/Functions/")
 source("translate_dataset_column_names.R")
 source("digits_of_year.R")
+source("copycat.R")
 
 #Import data on when each municipality submitted its financial reports
 setwd(project_folder)
@@ -38,7 +39,7 @@ submissions %<>% .[,.(municipality_id, municipality,state,date)]
 submissions[, date := dmy(date)]
 
 #Check if only one year
-length(submissions$date %>% year %>% unique) == 1
+stopifnot(length(submissions$date %>% year %>% unique) == 1)
 
 #Define deadline (defined by law LRF)
 year <- submissions$date %>% year %>% unique 
@@ -55,22 +56,6 @@ submissions <- submissions[order(date)]
 submissions[, rank := 1:nrow(submissions)]
 submissions
 
-copycat <- function(pairs_dt, order_dt = submissions){
-  
-  pairs_dt <- as.vector(pairs_dt)
-  city_1_id <- pairs_dt[1] #municipality_id
-  city_2_id <- pairs_dt[2] #i.municipality_id
-  
-  #print(city_1_id)
-  #print(city_2_id)
-  ranks <- order_dt[(municipality_id == city_1_id) | (municipality_id == city_2_id), .(municipality_id, rank)]
-  ranks <- unique(ranks)
-  ranks <- ranks[order(-rank)]
-  copycat_city = ranks[1,.(municipality_id)] %>% as.numeric
-  
-  
-  return(copycat_city)
-}
 
 #Includes info on which city is the copycat in each pair of accounts.
 

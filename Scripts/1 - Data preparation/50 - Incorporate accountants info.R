@@ -33,7 +33,25 @@ accountants %>% is.data.table #Checkpoint of format
 #We use the accountant's e-mail as a way to identify the accountant
 accountants <- na.locf(accountants)
 accountants %<>% .[accountant %like% "e-mail:", 
-                   .(municipality = unique(municipality), 
-                   accountant = unique(accountant)),
+                   .(accountant = unique(accountant)),
                    municipality_id]
 
+cities$municipality_id %>% class
+accountants$municipality_id %>% class
+
+
+is_unique_key(accountants, "municipality_id")
+
+
+
+#Merge this dataset with the cities dataset
+x <- dplyr::left_join(cities, accountants, by = "municipality_id")
+head(x)
+names(cities)
+names(accountants)
+mean(x$municipality_id)
+is.na(x) %>% mean
+
+x %>% head
+
+x$accountant %>% table

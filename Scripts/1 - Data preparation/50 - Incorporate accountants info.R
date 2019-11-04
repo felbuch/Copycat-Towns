@@ -3,9 +3,8 @@
 library(magrittr)
 library(data.table)
 library(zoo)
-
-
 setwd(project_folder)
+source("./Copycat-Towns/Scripts/1 - Data preparation/Functions/drop_last_digit.R")
 
 #Define the number of sheets in the Excel workbook file containing information data
 #(It's 26, but I didn't want just to hard code it.)
@@ -32,26 +31,30 @@ accountants %>% is.data.table #Checkpoint of format
 #We now wrangle the data to put it into a formal dataset
 #We use the accountant's e-mail as a way to identify the accountant
 accountants <- na.locf(accountants)
-accountants %<>% .[accountant %like% "e-mail:", 
-                   .(accountant = unique(accountant)),
-                   municipality_id]
+accountants %<>% .[accountant %like% "e-mail:",.(municipality_id, accountant)]
+accountants %<>% unique()
 
-cities$municipality_id %>% class
-accountants$municipality_id %>% class
+# is_unique_key(accountants, "municipality_id") #Checkpoint
 
 
-is_unique_key(accountants, "municipality_id")
 
 
+#Before we merge this dataset, 
+#we must acknowledge de fact that the municipality_id in the cities dataset
+#has one aditional (verifying) digit that the municipality_id in the accountants dataset lacks.
+#Therefore, we create a new variable where we drop the last digit of the municipality_id 
+#in the cities. We thus use this variable as a key to merge the two datasets.
+cities %<>% as.data.table()
+cities[, short_municipality_id := drop_last_digit(municipality_id)]
 
 #Merge this dataset with the cities dataset
-x <- dplyr::left_join(cities, accountants, by = "municipality_id")
-head(x)
+cities <- dplyr::left_join(cities, accountants, by = c("short_municipality_id" = "municipality_id"))
+cities %<>% dplyr::select(-short_municipality_id)
+
+
+head(cities)
 names(cities)
 names(accountants)
 mean(x$municipality_id)
 is.na(x) %>% mean
 
-x %>% head
-
-x$accountant %>% table

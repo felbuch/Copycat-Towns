@@ -1,4 +1,4 @@
-rm(list = ls());gc()
+#rm(list = ls());gc()
 
 #Set main working directory
 project_folder <- "C:/Users/Felipe/Desktop/Duke MIDS/Modelling and Representation of Data/0 - Final Project/"
@@ -37,7 +37,7 @@ names_fin_datasets <- c("municipality",
 fin %<>%  translate_dataset_column_names(names_fin_datasets)
 
 #Does each account appear only once per municipality?
-is_unique_key(data_table = fin, key = c("account","municipality_id"))
+stopifnot(is_unique_key(data_table = fin, key = c("account","municipality_id")))
 
 #Set key
 setkey(fin, account, municipality_id)
@@ -47,11 +47,11 @@ setkey(fin, account, municipality_id)
 fin[ , amount := change_decimal_separator(amount)]
 fin$amount %<>% as.numeric
 
-is.numeric(fin$amount) #Checkpoint
+stopifnot(is.numeric(fin$amount)) #Checkpoint
 
 #Identify different municipalities with the same amount in the same account
 #Accounts with zero value do not count for as similar accounts
-is_unique_key(data_table = fin, key = c("account","municipality_id")) #Checkpoint
+stopifnot(is_unique_key(data_table = fin, key = c("account","municipality_id"))) #Checkpoint
 
 pairs_of_similar_accounts <- fin[fin, on = .(account,amount), nomatch = 0]
 pairs_of_similar_accounts %<>% .[amount != 0]

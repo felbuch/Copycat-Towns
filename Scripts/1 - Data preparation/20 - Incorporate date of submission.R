@@ -76,6 +76,9 @@ copycat <- function(pairs_dt, order_dt = submissions){
 
 pairs_of_similar_accounts$copycat_id <- pairs_of_similar_accounts[,.(municipality_id, i.municipality_id)] %>% apply(1, copycat)
 
+##################
+#NEXT SCRIPT: 30
+##################
 
 
 

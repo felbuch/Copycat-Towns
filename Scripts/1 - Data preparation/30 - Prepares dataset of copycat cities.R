@@ -47,3 +47,6 @@ setwd(project_folder)
 setwd("./Copycat-Towns/Datasets/2 - Intermediary data")
 save(cities, file = "Municipality_copycat_label.RData")
 
+##################
+#NEXT SCRIPT: 40
+##################

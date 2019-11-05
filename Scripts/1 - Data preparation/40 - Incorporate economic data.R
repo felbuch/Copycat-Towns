@@ -43,7 +43,3 @@ cities %<>% as.data.table()
 
 stopifnot(cities[gdp == max(cities$gdp), .(municipality_id)] == 3550308) #Checkpoint. The greatest gdp is Sao Paulo
 
-
-setwd(project_folder)
-setwd("./Copycat-Towns/Datasets/2 - Intermediary data/")
-save(cities, file = "Cities_with_Covariates.RData")

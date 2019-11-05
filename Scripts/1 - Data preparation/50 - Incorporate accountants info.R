@@ -53,4 +53,8 @@ cities %<>% as.data.table
 
 stopifnot(is_unique_key(cities, "municipality_id"))
 
+#Save
+setwd(project_folder)
+setwd("./Copycat-Towns/Datasets/2 - Intermediary data/")
+save(cities, file = "Cities_with_Covariates.RData")
 

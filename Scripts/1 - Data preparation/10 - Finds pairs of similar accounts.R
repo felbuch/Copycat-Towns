@@ -64,7 +64,10 @@ pairs_of_similar_accounts %<>% .[amount != 0]
 pairs_of_similar_accounts %<>% .[municipality_id != i.municipality_id]
 
 #Our key here is a pair of municipalities which share an account with similar value
-is_unique_key(data_table = pairs_of_similar_accounts, key = c("municipality_id","i.municipality_id","account","amount"))
+stopifnot(is_unique_key(data_table = pairs_of_similar_accounts, key = c("municipality_id","i.municipality_id","account","amount")))
+
+#We do not consider similar accounts which are both zero
+stopifnot(nrow(pairs_of_similar_accounts[amount == 0]) == 0)
 
 #A few remarks:
 # 1 - Each pair of municipalities appear twice in the database, in reverse order. 

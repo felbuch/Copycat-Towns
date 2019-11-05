@@ -1,12 +1,19 @@
-head(cities)
 
+
+setwd(project_folder)
+setwd("./Copycat-Towns/Datasets/2 - Intermediary data/")
+load("./Cities_with_Covariates.RData")
 setwd(project_folder)
 setwd("./Copycat-Towns/Scripts/1 - Data preparation/Functions/")
 source("email_from_gov.R")
-source("get_name_from_email.R")
+source("clean_email.R")
 
 
 #Cities who do not have data on their accountants are uncompliant with the Health Ministry
+#Missing data on accountants is MNAR, since it conveys information about negligence or 
+#incapacity of the city to cope with the burocratic requirements of the Health Ministry.
+#This carries information on how well organized a city is and this may arguably translate to
+#the propensity of copying another city's acounts.
 cities[, uncompliant_w_health_ministry := 0]
 cities[is.na(accountant), uncompliant_w_health_ministry := 1]
 
@@ -21,7 +28,14 @@ cities[is.na(accountant), uncompliant_w_health_ministry := 1]
 cities[, outsourced_accountant := as.numeric(!email_from_gov(accountant))]
 
 #Get name of accountant
-cities[, accountant_name := get_name_from_email(accountant)]
+cities[, accountant := clean_email(accountant)]
 
 
+#How many other cities does the accountant of each city take care of?
+
+
+
+
+
+cities %>% head
 

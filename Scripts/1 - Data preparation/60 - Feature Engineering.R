@@ -32,10 +32,12 @@ cities[, accountant := clean_email(accountant)]
 
 
 #How many other cities does the accountant of each city take care of?
+polygamy <- cities[!is.na(accountant),.(accountant)] %>% .[,.N, accountant]
+names(polygamy) <- c("accountant","nb_cities_same_accountant")
+cities <- left_join(cities, polygamy)
 
 
-
-
-
-cities %>% head
-
+#Save
+setwd(project_folder)
+setwd("./Copycat-Towns/Datasets/2 - Intermediary data/")
+save(cities, file = "Cities_with_Covariates.RData")

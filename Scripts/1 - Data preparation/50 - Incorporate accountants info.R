@@ -1,5 +1,4 @@
 
-
 library(magrittr)
 library(data.table)
 library(zoo)
@@ -34,7 +33,7 @@ accountants <- na.locf(accountants)
 accountants %<>% .[accountant %like% "e-mail:",.(municipality_id, accountant)]
 accountants %<>% unique()
 
-# is_unique_key(accountants, "municipality_id") #Checkpoint
+stopifnot(is_unique_key(accountants, "municipality_id")) #Checkpoint
 
 
 
@@ -50,11 +49,8 @@ cities[, short_municipality_id := drop_last_digit(municipality_id)]
 #Merge this dataset with the cities dataset
 cities <- dplyr::left_join(cities, accountants, by = c("short_municipality_id" = "municipality_id"))
 cities %<>% dplyr::select(-short_municipality_id)
+cities %<>% as.data.table
 
+stopifnot(is_unique_key(cities, "municipality_id"))
 
-head(cities)
-names(cities)
-names(accountants)
-mean(x$municipality_id)
-is.na(x) %>% mean
 

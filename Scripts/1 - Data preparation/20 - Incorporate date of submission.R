@@ -61,6 +61,12 @@ submissions
 
 pairs_of_similar_accounts$copycat_id <- pairs_of_similar_accounts[,.(municipality_id, i.municipality_id)] %>% apply(1, copycat)
 
+#Save this dataset.
+#It is an interesting dataset to do further analysis (e.g. network analysis)
+setwd(project_folder)
+setwd("./Copycat-Towns/Datasets/2 - Intermediary data/")
+save(pairs_of_similar_accounts, file = "Pairs of Similar Accounts.RData")
+
 ##################
 #NEXT SCRIPT: 30
 ##################

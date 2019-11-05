@@ -22,7 +22,11 @@ source("change_decimal_separator.R")
 #Import financial accounts datasets
 setwd(project_folder)
 setwd("./Out-of-git/1 - Raw data/")
-fin = fread("Brazil Municipalities Balance Sheets 2018.csv")
+#fin = fread("Brazil Municipalities Balance Sheets 2018.csv")
+fin_1 = fread("Brazil Municipalities Balance Sheets 2018.csv")
+fin_2 = fread("Brazil Municipalities Change in Wealth 2018.csv")
+fin = rbind(fin_1, fin_2)
+rm(fin_1, fin_2);gc()
 
 #Define english translation of column names
 names_fin_datasets <- c("municipality",
@@ -49,6 +53,8 @@ fin$amount %<>% as.numeric
 
 stopifnot(is.numeric(fin$amount)) #Checkpoint
 
+fin[,account_type := NULL] #Discard unnecessary variable
+
 #Identify different municipalities with the same amount in the same account
 #Accounts with zero value do not count for as similar accounts
 stopifnot(is_unique_key(data_table = fin, key = c("account","municipality_id"))) #Checkpoint
@@ -65,10 +71,10 @@ is_unique_key(data_table = pairs_of_similar_accounts, key = c("municipality_id",
 # Thus, one has A-B in one line and B-A in another line, representing a single fact: that A and B share a similar account.
 # 2 - It follows that the number of similarities is actually half the number of rows in the similar accounts.
 # 3 - It also follows that nrow(similar_accounts) should be an even number, so we check that:
-if(!(nrow(pairs_of_similar_accounts) %% 2 == 0))
-{
-  print("Something went wrong. The similar_accounts dataframe should have had an even number of rows")
-}
+
+
+stopifnot(nrow(pairs_of_similar_accounts) %% 2 == 0)
+
 #4 - The unit of analysis here is a pair. However, we only have nrows(similar_accounts / 2) pairs with similar 
 # out of a total of (Choose(nrow(fin18),2)) possibilities. This is really small. In fact, that is
 (nrow(pairs_of_similar_accounts)/2) / choose(nrow(fin),2)

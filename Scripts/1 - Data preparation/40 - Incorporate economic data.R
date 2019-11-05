@@ -39,6 +39,10 @@ levels(econ$urban_hierarchy) <- c("Local Center",
 
 #Merge with cities dataset
 cities <- dplyr::inner_join(cities, econ, by = "municipality_id")
+cities %<>% as.data.table()
+
+stopifnot(cities[gdp == max(cities$gdp), .(municipality_id)] == 3550308) #Checkpoint. The greatest gdp is Sao Paulo
+
 
 setwd(project_folder)
 setwd("./Copycat-Towns/Datasets/2 - Intermediary data/")

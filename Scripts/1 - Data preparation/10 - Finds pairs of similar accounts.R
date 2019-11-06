@@ -1,4 +1,6 @@
 #rm(list = ls());gc()
+#digits_to_match <- 5 #For two accounts to be considered equal, they must have at least how many digits?
+
 
 #Set main working directory
 project_folder <- "C:/Users/Felipe/Desktop/Duke MIDS/Modelling and Representation of Data/0 - Final Project/"
@@ -18,6 +20,7 @@ source("remove_repeating_zeros_between_dots.R")
 source("as_percentage.R")
 source("is_unique_key.R")
 source("change_decimal_separator.R")
+source("n_digits.R")
 
 #Import financial accounts datasets
 setwd(project_folder)
@@ -62,6 +65,12 @@ stopifnot(is_unique_key(data_table = fin, key = c("account","municipality_id")))
 pairs_of_similar_accounts <- fin[fin, on = .(account,amount), nomatch = 0]
 pairs_of_similar_accounts %<>% .[amount != 0]
 pairs_of_similar_accounts %<>% .[municipality_id != i.municipality_id]
+
+#Consider as matching only accounts which have at least "digits_to_match" digits
+pairs_of_similar_accounts %<>% .[,ndigits := n_digits(amount)]
+pairs_of_similar_accounts %<>% .[ndigits >= digits_to_match]
+pairs_of_similar_accounts[,ndigits := NULL]
+
 
 #Our key here is a pair of municipalities which share an account with similar value
 stopifnot(is_unique_key(data_table = pairs_of_similar_accounts, key = c("municipality_id","i.municipality_id","account","amount")))

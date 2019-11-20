@@ -64,8 +64,12 @@ fin <- fin[amount != 0]
 #Identify different municipalities with the same amount in the same account
 stopifnot(is_unique_key(data_table = fin, key = c("account","municipality_id"))) #Checkpoint
 
-
-
+#Save dataset with financial accounts.
+#It will be used both for finding pairs of accounts
+#and for answering the question of when is a match a mere coincidence.
+setwd(project_folder)
+setwd("./Copycat-Towns/Datasets/2 - Intermediary data/")
+save(fin, file = "accounts.RData")
 ##################
 #NEXT SCRIPT: 15
 ##################

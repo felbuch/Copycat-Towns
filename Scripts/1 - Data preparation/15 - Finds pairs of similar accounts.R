@@ -2,8 +2,6 @@
 #PREVIOUS SCRIPT: 10
 #####################
 
-
-
 pairs_of_similar_accounts <- fin[fin, on = .(account,amount), nomatch = 0]
 pairs_of_similar_accounts %<>% .[municipality_id != i.municipality_id]
 

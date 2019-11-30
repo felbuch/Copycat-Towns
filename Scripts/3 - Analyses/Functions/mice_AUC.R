@@ -5,8 +5,6 @@ mice_AUC <- function(with_mice_glm_output){
   #using the with(..., glm(...)) routine. This function takes
   #the output of this routine and calculates its AUC
   
-  with_mice_glm_output = no_interactions_logit
-  
   require(magrittr)
   require(pROC)
   

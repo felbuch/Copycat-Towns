@@ -37,3 +37,7 @@ stripplot(mi_cities, pch = 20, cex = 1.2)
 setwd(project_folder)
 setwd("./Copycat-Towns/Datasets/3 - Final data/")
 save(mi_cities, file = "mi_cities.RData")
+
+cities <- cities_mda
+save(cities, file = "cities.RData")
+

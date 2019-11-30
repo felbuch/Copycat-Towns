@@ -16,41 +16,6 @@ load("./Copycat-Towns/Datasets/2 - Intermediary data/Cities_with_Covariates.RDat
 str(cities)
 cities %<>% as.data.table()
 
-###################
-#NUMERIC VARIABLES
-###################
-
-diagnose_numeric(cities)
-
-#Basic "does it make sense" analysis
-cities[gdp < 0] %>% nrow
-cities[order(-gdp)][,.(municipality)] %>% head(10)
-cities[order(-population)][,.(municipality)] %>% head(10)
-
-plot_correlate(cities[,.(population,n_copied_accounts,gdp,gdp_per_capita)])
-
-
-cities_rf <- cities[complete.cases(cities), ] %>% as.data.table
-cities_rf[, municipality_id := NULL]
-cities_rf[, municipality := NULL]
-cities_rf$state %<>% as.factor()
-cities_rf$is_copycat %<>% as.factor()
-cities_rf$accountant %<>% as.factor()
-cities_rf$uncompliant_w_health_ministry %<>% as.factor()
-cities_rf$outsourced_accountant %<>% as.factor()
-
-rf <- randomForest::randomForest(as.factor(is_copycat) ~ . -accountant -n_copied_accounts, data = cities_rf)
-rf
-
-randomForest::importance(rf) %>% as.data.frame(optional = TRUE)
-
-
-rf <- randomForest::randomForest(n_copied_accounts ~ . -accountant -is_copycat, data = cities_rf)
-rf
-
-
-cities$n_copied_accounts %<>% as.factor
-levels(cities$n_copied_accounts)
 
 #Size doesn`t seem to matter that much`
 ggplot(data = cities, aes(x = population, y = gdp_per_capita, color = n_copied_accounts)) + 
@@ -59,49 +24,56 @@ ggplot(data = cities, aes(x = population, y = gdp_per_capita, color = n_copied_a
   scale_y_log10() #+
 #  scale_color_brewer(type = "seq", palette = 2)
 
-
+#Only for copycats
 ggplot(data = cities[is_copycat == 1], aes(x = population, y = gdp_per_capita, color = n_copied_accounts)) + 
   geom_point() +
   scale_x_log10() +
   scale_y_log10()
 
 
+
+#Lets make some variables factors
+cities$is_copycat %<>% factor()
+levels(cities$is_copycat) <- c("Not Copycat", "Copycat")
+
+cities$outsourced_accountant %<>% factor()
+levels(cities$outsourced_accountant) <- c("Hired accountant", "Outsourced accountant")
+
+
+#Change folder to save graph results
+setwd(project_folder)
+
+#is_copycat does not seem to depend on population, gdp_per_capita, urban hierarchy or outsourced accountant
 ggplot(data = cities, aes(x = population, y = gdp_per_capita, color = is_copycat)) + 
   geom_point() +
   scale_x_log10() +
   scale_y_log10() +
-  facet_wrap(~urban_hierarchy)
+  scale_color_manual(values = c("navy blue","red")) +
+  facet_grid(urban_hierarchy~outsourced_accountant, labeller = label_wrap_gen(width = 0.5, multi_line = TRUE)) +
+  theme_bw() +
+  ggsave("./Copycat-Towns/Results/EDA_interactions_1.jpg")
 
 
-ggplot(data = cities, aes(x = population, y = gdp_per_capita, color = is_copycat)) + 
-  geom_point() +
-  scale_x_log10() +
+#There seems to be no difference in the number of copied accounts for
+#cities with hired or outsourced accountants.
+#Region also doesnt seem to play a role, though there is slightly more copied accounts
+#in the North region, as expected.
+#Unlike expected, it happens with hired accountants!
+#Yet, the gross cases of copying occure with outsourced accountants and in the NE.
+ggplot(data = cities, aes(x = region, y = n_copied_accounts)) + 
+  geom_boxplot() +
   scale_y_log10() +
-  facet_wrap(~outsourced_accountant)
+  scale_color_manual(values = c("red","yellow","pink","green","orange")) +
+  facet_grid(~outsourced_accountant, labeller = label_wrap_gen(width = 0.5, multi_line = TRUE)) +
+  theme_bw() +
+  ggsave("./Copycat-Towns/Results/EDA_interactions_2.jpg")
 
 
-cities$urban_hierarchy %<>% as.factor() 
-ggplot(data = cities[is_copycat == 1], aes(y = n_copied_accounts)) + geom_boxplot(group = urban_hierarchy)
-ggplot(data = cities[is_copycat == 1], aes(group = outsourced_accountant, y = n_copied_accounts)) + geom_boxplot()
-ggplot(data = cities[is_copycat == 1], aes(group = uncompliant_w_health_ministry, y = n_copied_accounts)) + geom_boxplot()
 
-ggplot(data = cities[is_copycat == 1], aes(x = n_copied_accounts, group = outsourced_accountant, fill = outsourced_accountant, alpha = 0.3)) + geom_density()
+#Histogram of n_copied_acounts
+ggplot(data = cities, aes(x = n_copied_accounts)) + 
+  geom_histogram(binwidth = 1) +
+  theme_bw() +
+  ggsave("./Copycat-Towns/Results/Histogram_n_copied_accounts.jpg")
 
-cities$shares_accountant <- ifelse(cities$nb_cities_same_accountant > 1, 1, 0)
-ggplot(data = cities[is_copycat == 1 & !is.na(shares_accountant)], aes(x = n_copied_accounts, group = shares_accountant, fill = shares_accountant, alpha = 0.3)) + geom_density()
-
-
-ggplot(data = cities[is_copycat == 1], aes(y = n_copied_accounts, group = nb_cities_same_accountant)) + geom_boxplot()
-
-ggplot(data = cities[is_copycat == 1], aes(y = n_copied_accounts, x = nb_cities_same_accountant)) + geom_point()
-
-
-pairs_of_similar_accounts[]
-
-
-ggplot(data = cities[is_copycat == 1], aes(y = n_copied_accounts, x = nb_cities_same_accountant)) + geom_point()
-
-ggplot(data = cities[is_copycat == 1], aes(x = nb_cities_same_accountant, y = n_copied_accounts)) + 
-  geom_point()  +
-  facet_wrap(~state)
 

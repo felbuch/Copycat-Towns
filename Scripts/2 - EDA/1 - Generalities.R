@@ -1,6 +1,5 @@
 source("./Copycat-Towns/Scripts/1 - Data preparation/Functions/as_percentage.R")
 
-
 #We now produce a dataset of municipalities with the number of accounts
 cities <- as.data.table(cities)
 #First, very quick statistic:
@@ -26,7 +25,6 @@ nboc$n_copied_accounts %>% hist
 
 #São Paulo
 cities[municipality_id == 3550308]
-
 
 
 #Now lets look IF a city copies anything.

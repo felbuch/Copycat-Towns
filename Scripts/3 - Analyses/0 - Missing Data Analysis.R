@@ -2,6 +2,7 @@ rm(list = ls())
 gc()
 
 project_folder <- "C:/Users/Felipe/Desktop/Duke MIDS/Modelling and Representation of Data/0 - Final Project/"
+graphs_folder <- paste0(project_folder,"Copycat-Towns/Results/")
 setwd(project_folder)
 
 #Load packages
@@ -12,14 +13,17 @@ library(mice)
 
 
 #Load data
-load("./Copycat-Towns/Datasets/2 - Intermediary data/Cities_with_Covariates.RData")
-cities %<>% as.data.table()
-str(cities)
+load("./Copycat-Towns/Datasets/2 - Intermediary data/standardized_cities.RData")
+cities_Z %<>% as.data.table()
+str(cities_Z)
 
-cities_mda <- cities[,c("municipality_id","municipality","accountant","uncompliant_w_health_ministry") := NULL]
+cities_mda <- cities_Z[,c("municipality_id","municipality","accountant","uncompliant_w_health_ministry") := NULL]
 
 #Missing Data Pattern
+setwd(graphs_folder)
+jpeg("missing_data_pattern.jpeg")
 md.pattern(cities_mda)
+dev.off()
 
 #We only have missing data in the nb_cities_same_accountant
 
@@ -34,8 +38,13 @@ plot(mi_cities)
 
 
 #Inspectng quality
+setwd(graphs_folder)
+jpeg("missing_data_density_plot_mi_cities.jpeg")
 densityplot(mi_cities)
-stripplot(mi_cities, pch = 20, cex = 1.2)
+dev.off()
+jpeg("missing_data_stripplot_mi_cities.jpeg")
+stripplot(mi_cities, nb_cities_same_accountant, pch = 20, cex = 1.2)
+dev.off()
 #End of multiple imputation for the entire dataset----------------------------------------
 
 #Now we do only for cities which copy at least one account----------------------------------------
@@ -46,6 +55,17 @@ mi_copycat_cities <- mice(cities_mds_filtered, m = 10,  method = "cart", seed = 
 summary(mi_copycat_cities)
 sample_n(complete(mi_copycat_cities, 1), 10)
 plot(mi_copycat_cities)
+
+
+setwd(graphs_folder)
+jpeg("missing_data_density_plot_mi_copycat_cities.jpeg")
+densityplot(mi_cities)
+dev.off()
+jpeg("missing_data_stripplot_mi_copycat_cities.jpeg")
+stripplot(mi_cities, nb_cities_same_accountant, pch = 20, cex = 1.2)
+dev.off()
+
+
 #--------------------------------------------------------------------------------------------------
 
 #Save
@@ -54,11 +74,6 @@ setwd("./Copycat-Towns/Datasets/3 - Final data/")
 save(mi_cities, file = "mi_cities.RData")
 save(mi_copycat_cities, file = "mi_copycat_cities.RData")
 
-
-
-
-
-
-cities <- cities_mda
-save(cities, file = "cities.RData")
+cities_Z <- cities_mda
+save(cities_Z, file = "cities.RData")
 

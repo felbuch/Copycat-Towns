@@ -66,7 +66,8 @@ ggplot(data = ddist, aes(x = ndigits)) +
   #Confidence interval upper line
   geom_line(aes(y = prob + z * sd), col = "blue") +
   geom_ribbon(aes(ymin = prob, ymax = prob + z * sd), fill = "light blue", alpha = 0.3) +
-  scale_x_continuous(breaks = c(-2,-1, 1,2,3,4,5,6,7,8,9,10,11,12)) +
+  #scale_x_continuous(breaks = c(-2,-1, 1,2,3,4,5,6,7,8,9,10,11,12)) +
+  scale_x_continuous(breaks = c(1,2,3,4,5,6,7,8,9), limits = c(1,9)) +
   xlab("Number of digits of the account \n (including 2 digits for cents)") +
   ylab("Proportion of similar \n accounts") +
   annotate("text", label = "Observed",col = "red", 4.5,.75) +

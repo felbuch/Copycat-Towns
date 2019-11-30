@@ -1,5 +1,5 @@
-
-
+#Set main working directory
+project_folder <- "C:/Users/Felipe/Desktop/Duke MIDS/Modelling and Representation of Data/0 - Final Project/"
 setwd(project_folder)
 setwd("./Copycat-Towns/Datasets/2 - Intermediary data/")
 load("./Cities_with_Covariates.RData")
@@ -7,7 +7,7 @@ setwd(project_folder)
 setwd("./Copycat-Towns/Scripts/1 - Data preparation/Functions/")
 source("email_from_gov.R")
 source("clean_email.R")
-
+cities %<>% as.data.table()
 
 #Cities who do not have data on their accountants are uncompliant with the Health Ministry
 #Missing data on accountants is MNAR, since it conveys information about negligence or 
@@ -35,6 +35,23 @@ cities[, accountant := clean_email(accountant)]
 polygamy <- cities[!is.na(accountant),.(accountant)] %>% .[,.N, accountant]
 names(polygamy) <- c("accountant","nb_cities_same_accountant")
 cities <- left_join(cities, polygamy)
+
+#Identify region of Brazil
+N <- c("AM","AC","AP","RR","PA","RO","TO") 
+NE <- c("MA","PI","CE","PE","RN","PB","SE","AL","BA")
+CW <- c("MT","MS","GO")
+SW <- c("RJ","SP","ES","MG")
+S <- c("PR","RS","SC")
+
+cities %<>% as.data.table 
+cities[state %in% N, region := "N"]
+cities[state %in% NE, region := "NE"]
+cities[state %in% CW, region := "CW"]
+cities[state %in% SW, region := "SW"]
+cities[state %in% S, region := "S"]
+cities$region %<>% factor(levels = c("N","NE","SW","S","CW")) 
+
+
 
 
 #Save

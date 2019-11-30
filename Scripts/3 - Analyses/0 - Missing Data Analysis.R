@@ -25,18 +25,36 @@ md.pattern(cities_mda)
 
 #Lets do multiple imputation
 #We use method *cart* because some of our variables are highly unbalanced
-mi_cities <- mice(cities_mda, m = 5,  method = "cart")
+
+#We first do for the entire dataset----------------------------------------
+mi_cities <- mice(cities_mda, m = 10,  method = "cart", seed = 314)
 summary(mi_cities)
 sample_n(complete(mi_cities, 1), 10)
+plot(mi_cities)
+
 
 #Inspectng quality
 densityplot(mi_cities)
 stripplot(mi_cities, pch = 20, cex = 1.2)
+#End of multiple imputation for the entire dataset----------------------------------------
+
+#Now we do only for cities which copy at least one account----------------------------------------
+mi_copycat_cities <- mice(cities_mda[is_copycat == 1], m = 10,  method = "cart", seed = 314)
+summary(mi_copycat_cities)
+sample_n(complete(mi_copycat_cities, 1), 10)
+plot(mi_copycat_cities)
+#--------------------------------------------------------------------------------------------------
 
 #Save
 setwd(project_folder)
 setwd("./Copycat-Towns/Datasets/3 - Final data/")
 save(mi_cities, file = "mi_cities.RData")
+save(mi_copycat_cities, file = "mi_copycat_cities.RData")
+
+
+
+
+
 
 cities <- cities_mda
 save(cities, file = "cities.RData")

@@ -39,7 +39,10 @@ stripplot(mi_cities, pch = 20, cex = 1.2)
 #End of multiple imputation for the entire dataset----------------------------------------
 
 #Now we do only for cities which copy at least one account----------------------------------------
-mi_copycat_cities <- mice(cities_mda[is_copycat == 1], m = 10,  method = "cart", seed = 314)
+cities_mds_filtered <- cities_mda[is_copycat == 1][n_copied_accounts < 50] 
+# There are only 3 cities with more than 50 copied accounts and they are clearly outliers
+# Indeed, the 3rd quartile of n_copied_accounts for is_copycat == 1 is 4
+mi_copycat_cities <- mice(cities_mds_filtered, m = 10,  method = "cart", seed = 314)
 summary(mi_copycat_cities)
 sample_n(complete(mi_copycat_cities, 1), 10)
 plot(mi_copycat_cities)

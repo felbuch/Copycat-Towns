@@ -49,10 +49,13 @@ cities[state %in% NE, region := "NE"]
 cities[state %in% CW, region := "CW"]
 cities[state %in% SW, region := "SW"]
 cities[state %in% S, region := "S"]
-cities$region %<>% factor(levels = c("N","NE","SW","S","CW")) 
+cities$region %<>% factor(levels = c("SW","S","N","NE","CW")) 
 
 
-
+#Some log transformations on very skewed covariates
+cities$log_population <- cities$population %>% log() 
+cities$log_gdp <- cities$gdp %>% log()
+cities$log_gdp_per_capita <- cities$gdp_per_capita %>% log()
 
 #Save
 setwd(project_folder)

@@ -8,6 +8,7 @@ rm(list = ls())
 gc()
 
 project_folder <- "C:/Users/Felipe/Desktop/Duke MIDS/Modelling and Representation of Data/0 - Final Project/"
+results_folder <- paste0(project_folder,"Copycat-Towns/Results/From_Script_B10")
 setwd(project_folder)
 
 #Load packages
@@ -33,46 +34,60 @@ example$n_copied_accounts %>% summary()
 hist(example %>% filter(n_copied_accounts < 50) %>% dplyr::select(n_copied_accounts), nclass = 100)
 
 
+###############################################################################
 #MODEL 10
-#No interactions log
+m10_desc <- "Linear regression using gdp. No logged variables nor interactions"
+###############################################################################
 
-no_interactions_log <- with(mi_copycat_cities,
-                              lm(log(n_copied_accounts) ~ 
-                                    #                         state + 
-                                    population + 
-                                    gdp +       #gdp_per_capita seems to leave worse residuals 
-                                    urban_hierarchy + 
-                                    outsourced_accountant + 
-                                    nb_cities_same_accountant + 
-                                    region))
+m10 <- with(mi_copycat_cities,
+            lm(n_copied_accounts ~ 
+                 population + 
+                 gdp + 
+                 urban_hierarchy + 
+                 outsourced_accountant + 
+                 nb_cities_same_accountant + 
+                 region))
 
-res_10 <- no_interactions_log[[4]][[1]]$residuals
-
-qqnorm(res_10)
-qqline(res_10)
+m10_pooled <- m10 %>% pool
 
 
-plot(no_interactions_log[[4]][[1]])
+setwd(results_folder)
 
+jpeg("residual_diagnostics_m10.jpeg")
+par(mfrow=c(2,2))
+plot(m10[[4]][[1]], 1)
+plot(m10[[4]][[1]], 2)
+plot(m10[[4]][[1]], 3)
+plot(m10[[4]][[1]], 4)
+par(mfrow=c(1,1))
+dev.off()
+
+
+###############################################################################
 #MODEL 20
-#No interactions sqrt
+m20_desc <- "Linear regression using gdp. Logged-transformed variables. No interactions"
+###############################################################################
 
-no_interactions_sqrt <- with(mi_copycat_cities,
-                            lm(sqrt(n_copied_accounts) ~ 
-                                 #                         state + 
-                                 population + 
-                                 gdp +       #gdp_per_capita seems to leave worse residuals 
-                                 urban_hierarchy + 
-                                 outsourced_accountant + 
-                                 nb_cities_same_accountant + 
-                                 region))
+m20 <- with(mi_copycat_cities,
+            lm(log(n_copied_accounts) ~ 
+                 log_population + 
+                 log_gdp + 
+                 urban_hierarchy + 
+                 outsourced_accountant + 
+                 nb_cities_same_accountant + 
+                 region))
 
-res_20 <- no_interactions_sqrt[[4]][[1]]$residuals
+m20_pooled <- m20 %>% pool
 
-qqnorm(res_20)
-qqline(res_20)
+setwd(results_folder)
+
+jpeg("residual_diagnostics_m20.jpeg")
+par(mfrow=c(2,2))
+plot(m20[[4]][[1]], 1)
+plot(m20[[4]][[1]], 2)
+plot(m20[[4]][[1]], 3)
+plot(m20[[4]][[1]], 4)
+par(mfrow=c(1,1))
+dev.off()
 
 
-#The log transformation seems to adhere better to the assumption of normality of the residuals
-
-plot(no_interactions_sqrt[[4]][[1]])

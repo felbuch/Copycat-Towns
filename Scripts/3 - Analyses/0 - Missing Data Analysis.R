@@ -1,5 +1,5 @@
-rm(list = ls())
-gc()
+#rm(list = ls())
+#gc()
 
 project_folder <- "C:/Users/Felipe/Desktop/Duke MIDS/Modelling and Representation of Data/0 - Final Project/"
 graphs_folder <- paste0(project_folder,"Copycat-Towns/Results/")

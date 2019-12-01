@@ -1,0 +1,6 @@
+[1] 3.093842
+[1] "m10 ( Poisson using gdp. No logged variables nor interactions ): 3.09384171170209"
+[1] "m20 ( Poisson using gdp_per_capita. No logged variables nor interactions ): 3.09384171170209"
+[1] "m30 ( QuasiPoisson using gdp_per_capita. No logged variables nor interactions ): 3.09384171170209"
+[1] "m40 ( QuasiPoisson using gdp_per_capita. Logged variables. No interactions ): 3.09084309241551"
+[1] "m50 ( QuasiPoisson using gdp_per_capita. Logged variables. Outsourced accountant interacting with region ): 3.09084309241551"

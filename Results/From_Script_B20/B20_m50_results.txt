@@ -1,0 +1,22 @@
+
+================================================================================
+                                  estimate std.error statistic    df     p.value
+--------------------------------------------------------------------------------
+(Intercept)                        1.185     0.087    13.577   2,336.763    0   
+log_population                     -0.050    0.018    -2.832   2,336.763  0.005 
+log_gdp_per_capita                 0.009     0.017     0.532   2,334.375  0.595 
+regionS                            -0.103    0.055    -1.886   2,336.763  0.059 
+regionN                            0.407     0.276     1.476   2,336.763  0.140 
+regionNE                           -0.037    0.189    -0.197   2,336.763  0.844 
+regionCW                           -0.028    0.158    -0.177   2,336.763  0.860 
+urban_hierarchyZone Center         0.013     0.087     0.153   2,336.763  0.878 
+urban_hierarchySubregional Center  -0.028    0.086    -0.331   2,336.763  0.741 
+urban_hierarchyRegional Center     -0.093    0.113    -0.817   2,336.763  0.414 
+urban_hierarchyMetropolis          -0.135    0.115    -1.175   2,336.763  0.240 
+outsourced_accountant              -0.057    0.045    -1.263   2,335.833  0.207 
+nb_cities_same_accountant          0.001     0.002     0.571   1,614.595  0.568 
+regionS:outsourced_accountant      -0.011    0.070    -0.155   2,336.540  0.877 
+regionN:outsourced_accountant      -0.328    0.280    -1.172   2,336.763  0.241 
+regionNE:outsourced_accountant     -0.013    0.191    -0.070   2,336.763  0.944 
+regionCW:outsourced_accountant     -0.005    0.169    -0.030   2,336.763  0.976 
+--------------------------------------------------------------------------------

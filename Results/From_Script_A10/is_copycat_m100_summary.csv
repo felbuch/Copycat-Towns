@@ -1,0 +1,44 @@
+                                                            estimate   std.error    statistic
+(Intercept)                                              0.013369477 0.266008897  0.050259510
+log_population                                          -0.189387633 0.039830041 -4.754894274
+log_gdp_per_capita                                      -0.033074718 0.040329389 -0.820114538
+regionS                                                 -0.322773160 0.131639926 -2.451939687
+regionN                                                  0.523088511 0.938732964  0.557228233
+regionNE                                                 0.871552965 0.557735473  1.562663679
+regionCW                                                -0.445254779 0.367760383 -1.210719805
+urban_hierarchyZone Center                               0.373438110 0.307751227  1.213441499
+urban_hierarchySubregional Center                        0.107273257 0.272944199  0.393022667
+urban_hierarchyRegional Center                           0.161772383 0.403372498  0.401049610
+urban_hierarchyMetropolis                                0.180813464 0.364738579  0.495734409
+outsourced_accountant                                   -0.297002818 0.324802756 -0.914409784
+nb_cities_same_accountant                               -0.003210533 0.004635329 -0.692622582
+regionS:outsourced_accountant                            0.066931685 0.163695268  0.408879777
+regionN:outsourced_accountant                           -0.219094108 0.945347280 -0.231760447
+regionNE:outsourced_accountant                          -1.018632778 0.560754737 -1.816538873
+regionCW:outsourced_accountant                          -0.147692119 0.387063512 -0.381570762
+urban_hierarchyZone Center:outsourced_accountant        -0.288787018 0.378528432 -0.762920282
+urban_hierarchySubregional Center:outsourced_accountant -0.001893521 0.328045673 -0.005772125
+urban_hierarchyRegional Center:outsourced_accountant    -0.190853925 0.490491806 -0.389107264
+urban_hierarchyMetropolis:outsourced_accountant         -0.460227065 0.469109976 -0.981064333
+                                                               df      p.value
+(Intercept)                                             5398.8126 9.599174e-01
+log_population                                          5399.4287 2.037104e-06
+log_gdp_per_capita                                      5358.2518 4.121873e-01
+regionS                                                 5399.4287 1.424029e-02
+regionN                                                 5399.4287 5.773946e-01
+regionNE                                                5399.4287 1.181903e-01
+regionCW                                                5399.4287 2.260558e-01
+urban_hierarchyZone Center                              5399.4287 2.250141e-01
+urban_hierarchySubregional Center                       5399.4287 6.943183e-01
+urban_hierarchyRegional Center                          5399.4287 6.883995e-01
+urban_hierarchyMetropolis                               5399.4287 6.201020e-01
+outsourced_accountant                                   5399.4287 3.605424e-01
+nb_cities_same_accountant                                534.6228 4.888472e-01
+regionS:outsourced_accountant                           5395.2801 6.826441e-01
+regionN:outsourced_accountant                           5399.4287 8.167329e-01
+regionNE:outsourced_accountant                          5399.4287 6.934317e-02
+regionCW:outsourced_accountant                          5399.3357 7.027948e-01
+urban_hierarchyZone Center:outsourced_accountant        5399.4287 4.455443e-01
+urban_hierarchySubregional Center:outsourced_accountant 5399.4287 9.953947e-01
+urban_hierarchyRegional Center:outsourced_accountant    5399.4287 6.972121e-01
+urban_hierarchyMetropolis:outsourced_accountant         5399.4287 3.266050e-01

@@ -3,11 +3,11 @@
 ########################################
 
 
-rm(list = ls())
-gc()
+#rm(list = ls())
+#gc()
 
 project_folder <- "C:/Users/Felipe/Desktop/Duke MIDS/Modelling and Representation of Data/0 - Final Project/"
-results_folder <- paste0(project_folder,"Copycat-Towns/Results/")
+results_folder <- paste0(project_folder,"Copycat-Towns/Results/From_Script_A10")
 setwd(project_folder)
 
 #Load packages

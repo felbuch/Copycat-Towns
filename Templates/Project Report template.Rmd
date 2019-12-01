@@ -1,0 +1,65 @@
+---
+title: "HW3 -- 1 -- Faithful"
+author: "Felipe Buchbinder"
+date: "9/10/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      include = FALSE)
+
+#Report should be 5 pages max.
+
+```
+
+## Summary
+
+A few sentences describing the inferential question(s), the method used and the most important results.
+5-6 lines
+
+## Introduction
+
+A more in-depth introduction to the inferential question(s) of interest.
+
+What is the question about?
+
+## Data
+
+You should describe the data in this section: how you obtained the data, the variables included, dealing with missing/erroneous values, exploratory data analysis etc.
+
+Quick summary. Anythin interesting? Wierd? Missing data? EDA goes here. 2, 3, 4 relationships which are interesting to see.
+
+```{r}
+#This code will not appear. Nor will its results.
+#But R knows it. You can use it later if you want to.
+x <- rnorm(200)
+x
+```
+
+```{r, include = TRUE}
+#The results of this code will appear in your final document.
+#Notice that we created x in a previous chunk of code which does not appear on the final document.
+hist(x)
+```
+
+
+## Model
+
+A detailed description of the model used, how you selected the model, how you selected the variables, model assessment, model validation, and presentation of the model results. What are your overall conclusions in context of the inferential problem(s)?
+
+
+
+This is the model. But in order to get there, I did this, and that, an selected the model using stepwise, whatever. Model assessment. No residual plots unless you see something really, really interesting.
+
+## Results
+
+## Conclusion & Remarks
+
+In this section, you should present the importance of your findings, and describe any limitations of the study. You can also address future work here if there are extensions of your analysis you find interesting, especially those that may address some of the limitations already mentioned.
+
+
+
+## Appendix
+
+Professor won't look at this unless he absolutely needs to because he didn't understand what you said before.
